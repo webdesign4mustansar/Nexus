@@ -3,10 +3,12 @@ import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
+import { GuidedTour, useGuidedTour } from '../GuidedTour';   // ── added
 
 export const DashboardLayout: React.FC = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
-  
+  const { isOpen, startTour, endTour } = useGuidedTour();    // ── added
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -14,24 +16,30 @@ export const DashboardLayout: React.FC = () => {
       </div>
     );
   }
-  
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Navbar />
-      
+
+      {/* ── Pass startTour so Navbar can show the Tour button ── */}
+      <Navbar onStartTour={startTour} />
+
       <div className="flex-1 flex overflow-hidden">
         <Sidebar />
-        
+
         <main className="flex-1 overflow-y-auto p-6">
           <div className="max-w-7xl mx-auto">
             <Outlet />
           </div>
         </main>
       </div>
+
+      {/* ── Guided tour overlay (renders on top of everything) ── */}
+      <GuidedTour isOpen={isOpen} onClose={endTour} />
+
     </div>
   );
 };
