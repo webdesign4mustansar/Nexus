@@ -26,6 +26,7 @@ import { DocumentsPage } from './pages/documents/DocumentsPage';
 import { SettingsPage } from './pages/settings/SettingsPage';
 import { HelpPage } from './pages/help/HelpPage';
 import { DealsPage } from './pages/deals/DealsPage';
+import { MeetingCalendarPage } from './pages/calendar/MeetingCalendarPage';
 
 // Chat Pages
 import { ChatPage } from './pages/chat/ChatPage';
@@ -89,6 +90,8 @@ function App() {
             <Route index element={<ChatPage />} />
             <Route path=":userId" element={<ChatPage />} />
           </Route>
+          {/*  calendar route */}
+          <Route path="/calendar" element={<MeetingCalendarPage />} />
           
           {/* Redirect root to login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
