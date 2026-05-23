@@ -27,6 +27,7 @@ import { SettingsPage } from './pages/settings/SettingsPage';
 import { HelpPage } from './pages/help/HelpPage';
 import { DealsPage } from './pages/deals/DealsPage';
 import { MeetingCalendarPage } from './pages/calendar/MeetingCalendarPage';
+import { VideoCallPage } from './pages/videocall/VideoCallPage';
 
 // Chat Pages
 import { ChatPage } from './pages/chat/ChatPage';
@@ -92,6 +93,7 @@ function App() {
           </Route>
           {/*  calendar route */}
           <Route path="/calendar" element={<MeetingCalendarPage />} />
+          <Route path="/videocall" element={<VideoCallPage />} />
           
           {/* Redirect root to login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
