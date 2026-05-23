@@ -1,34 +1,39 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Menu, X, Bell, MessageCircle, User, LogOut, Building2, CircleDollarSign } from 'lucide-react';
+import { Menu, X, Bell, MessageCircle, User, LogOut, Building2, CircleDollarSign, Map } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { Avatar } from '../ui/Avatar';
 import { Button } from '../ui/Button';
 
-export const Navbar: React.FC = () => {
+// ── Added: accept onStartTour prop ──────────────────────────────────────────
+interface NavbarProps {
+  onStartTour?: () => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ onStartTour }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  
+
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  
+
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
-  
+
   // User dashboard route based on role
-  const dashboardRoute = user?.role === 'entrepreneur' 
-    ? '/dashboard/entrepreneur' 
+  const dashboardRoute = user?.role === 'entrepreneur'
+    ? '/dashboard/entrepreneur'
     : '/dashboard/investor';
-  
+
   // User profile route based on role and ID
-  const profileRoute = user 
-    ? `/profile/${user.role}/${user.id}` 
+  const profileRoute = user
+    ? `/profile/${user.role}/${user.id}`
     : '/login';
-  
+
   const navLinks = [
     {
       icon: user?.role === 'entrepreneur' ? <Building2 size={18} /> : <CircleDollarSign size={18} />,
@@ -51,11 +56,12 @@ export const Navbar: React.FC = () => {
       path: profileRoute,
     }
   ];
-  
+
   return (
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+
           {/* Logo and brand */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
@@ -68,7 +74,7 @@ export const Navbar: React.FC = () => {
               <span className="text-lg font-bold text-gray-900">Business Nexus</span>
             </Link>
           </div>
-          
+
           {/* Desktop navigation */}
           <div className="hidden md:flex md:items-center md:ml-6">
             {user ? (
@@ -83,15 +89,28 @@ export const Navbar: React.FC = () => {
                     {link.text}
                   </Link>
                 ))}
-                
-                <Button 
+
+                {/* ── Tour Button ─────────────────────────────────────── */}
+                {onStartTour && (
+                  <button
+                    onClick={onStartTour}
+                    data-tour="tour-launch"
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-md transition-colors duration-200 border border-primary-200"
+                  >
+                    <Map size={16} className="mr-1.5" />
+                    Tour
+                  </button>
+                )}
+                {/* ──────────────────────────────────────────────────── */}
+
+                <Button
                   variant="ghost"
                   onClick={handleLogout}
                   leftIcon={<LogOut size={18} />}
                 >
                   Logout
                 </Button>
-                
+
                 <Link to={profileRoute} className="flex items-center space-x-2 ml-2">
                   <Avatar
                     src={user.avatarUrl}
@@ -113,7 +132,7 @@ export const Navbar: React.FC = () => {
               </div>
             )}
           </div>
-          
+
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
             <button
@@ -129,7 +148,7 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white border-b border-gray-200 animate-fade-in">
@@ -148,7 +167,7 @@ export const Navbar: React.FC = () => {
                     <p className="text-xs text-gray-500 capitalize">{user.role}</p>
                   </div>
                 </div>
-                
+
                 <div className="border-t border-gray-200 pt-2">
                   {navLinks.map((link, index) => (
                     <Link
@@ -161,12 +180,21 @@ export const Navbar: React.FC = () => {
                       {link.text}
                     </Link>
                   ))}
-                  
+
+                  {/* ── Mobile Tour Button ───────────────────────────── */}
+                  {onStartTour && (
+                    <button
+                      onClick={() => { onStartTour(); setIsMenuOpen(false); }}
+                      className="flex w-full items-center px-3 py-2 text-base font-medium text-primary-600 hover:bg-primary-50 rounded-md"
+                    >
+                      <Map size={18} className="mr-3" />
+                      Take a Tour
+                    </button>
+                  )}
+                  {/* ─────────────────────────────────────────────────── */}
+
                   <button
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
+                    onClick={() => { handleLogout(); setIsMenuOpen(false); }}
                     className="flex w-full items-center px-3 py-2 text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-md"
                   >
                     <LogOut size={18} className="mr-3" />
@@ -176,18 +204,10 @@ export const Navbar: React.FC = () => {
               </>
             ) : (
               <div className="flex flex-col space-y-2 px-3 py-2">
-                <Link 
-                  to="/login" 
-                  className="w-full"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                <Link to="/login" className="w-full" onClick={() => setIsMenuOpen(false)}>
                   <Button variant="outline" fullWidth>Log in</Button>
                 </Link>
-                <Link 
-                  to="/register" 
-                  className="w-full"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                <Link to="/register" className="w-full" onClick={() => setIsMenuOpen(false)}>
                   <Button fullWidth>Sign up</Button>
                 </Link>
               </div>
