@@ -29,6 +29,8 @@ import { DealsPage } from './pages/deals/DealsPage';
 import { MeetingCalendarPage } from './pages/calendar/MeetingCalendarPage';
 import { VideoCallPage } from './pages/videocall/VideoCallPage';
 import { DocumentChamberPage } from './pages/documents/DocumentChamberPage';
+import { PaymentPage }         from './pages/payments/PaymentPage';
+import { SecurityPage }        from './pages/security/SecurityPage';
 
 // Chat Pages
 import { ChatPage } from './pages/chat/ChatPage';
@@ -96,6 +98,8 @@ function App() {
           <Route path="/calendar" element={<MeetingCalendarPage />} />
           <Route path="/videocall" element={<VideoCallPage />} />
           <Route path="/document-chamber" element={<DocumentChamberPage />} />
+          <Route path="/payments"          element={<PaymentPage />} />
+          <Route path="/security"          element={<SecurityPage />} />
           
           {/* Redirect root to login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
