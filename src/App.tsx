@@ -28,6 +28,7 @@ import { HelpPage } from './pages/help/HelpPage';
 import { DealsPage } from './pages/deals/DealsPage';
 import { MeetingCalendarPage } from './pages/calendar/MeetingCalendarPage';
 import { VideoCallPage } from './pages/videocall/VideoCallPage';
+import { DocumentChamberPage } from './pages/documents/DocumentChamberPage';
 
 // Chat Pages
 import { ChatPage } from './pages/chat/ChatPage';
@@ -94,6 +95,7 @@ function App() {
           {/*  calendar route */}
           <Route path="/calendar" element={<MeetingCalendarPage />} />
           <Route path="/videocall" element={<VideoCallPage />} />
+          <Route path="/document-chamber" element={<DocumentChamberPage />} />
           
           {/* Redirect root to login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
